@@ -22,13 +22,12 @@ func init() {
 }
 
 func TestRedact(t *testing.T) {
-	want := "level=info msg=\"configured Hubble with redact options\" options=\"&{CacheSize:3 HubbleRedactSettings:{Enabled:true RedactHTTPQuery:false RedactHTTPUserInfo:false RedactKafkaAPIKey:false RedactHttpHeaders:{Allow:map[] Deny:map[]}} EnableNetworkPolicyCorrelation:false}\"\n"
+	want := "level=info msg=\"configured Hubble with redact\" options=\"{Enabled:true RedactHTTPQuery:false RedactHTTPUserInfo:false RedactKafkaAPIKey:false RedactHttpHeaders:{Allow:map[] Deny:map[]}}\"\n"
 	var buf bytes.Buffer
 
 	log.SetOutput(&buf)
-	opt := Redact(log, false, false, false, nil, nil)
+	opt := WithRedact(log, false, false, false, nil, nil)
 	opt(&Options{
-		CacheSize: 3,
 		HubbleRedactSettings: HubbleRedactSettings{
 			Enabled:            false,
 			RedactHTTPQuery:    false,
@@ -44,7 +43,7 @@ func TestRedact(t *testing.T) {
 }
 
 func TestEnableNetworkPolicyCorrelation(t *testing.T) {
-	want := "level=info msg=\"configured Hubble with network policy correlation options\" options=\"&{CacheSize:0 HubbleRedactSettings:{Enabled:false RedactHTTPQuery:false RedactHTTPUserInfo:false RedactKafkaAPIKey:false RedactHttpHeaders:{Allow:map[] Deny:map[]}} EnableNetworkPolicyCorrelation:true}\"\n"
+	want := "level=info msg=\"configured Hubble with network policy correlation\" options=true\n"
 	var buf bytes.Buffer
 	log.SetOutput(&buf)
 	opt := WithNetworkPolicyCorrelation(log, true)

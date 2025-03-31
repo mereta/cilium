@@ -43,7 +43,7 @@ func CacheSize(size int) Option {
 }
 
 // Redact configures which data Hubble will redact.
-func Redact(logger logrus.FieldLogger, httpQuery, httpUserInfo, kafkaApiKey bool, allowHeaders, denyHeaders []string) Option {
+func WithRedact(logger logrus.FieldLogger, httpQuery, httpUserInfo, kafkaApiKey bool, allowHeaders, denyHeaders []string) Option {
 	return func(opt *Options) {
 		opt.HubbleRedactSettings.Enabled = true
 		opt.HubbleRedactSettings.RedactHTTPQuery = httpQuery
@@ -56,7 +56,7 @@ func Redact(logger logrus.FieldLogger, httpQuery, httpUserInfo, kafkaApiKey bool
 		if logger != nil {
 			logger.WithField(
 				"options",
-				fmt.Sprintf("%+v", opt)).Info("configured Hubble with redact options")
+				fmt.Sprintf("%+v", opt.HubbleRedactSettings)).Info("configured Hubble with redact")
 		}
 	}
 }
@@ -69,7 +69,7 @@ func WithNetworkPolicyCorrelation(logger logrus.FieldLogger, enabled bool) Optio
 		if logger != nil {
 			logger.WithField(
 				"options",
-				fmt.Sprintf("%+v", opt)).Info("configured Hubble with network policy correlation options")
+				fmt.Sprintf("%+v", opt.EnableNetworkPolicyCorrelation)).Info("configured Hubble with network policy correlation")
 		}
 	}
 }
