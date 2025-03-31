@@ -427,6 +427,8 @@ func (h *hubbleIntegration) launch(ctx context.Context) {
 		)
 	}
 
+	parserOpts = append(parserOpts, parserOptions.WithNetworkPolicyCorrelation(h.log, h.config.EnableNetworkPolicyCorrelation))
+
 	payloadParser, err := parser.New(h.log, h, h, h, h.ipcache, h, link.NewLinkCache(), h.cgroupManager, h.config.SkipUnknownCGroupIDs, parserOpts...)
 	if err != nil {
 		h.log.WithError(err).Error("Failed to initialize Hubble")

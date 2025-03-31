@@ -15,8 +15,9 @@ type Option func(*Options)
 
 // Options contains all parser options
 type Options struct {
-	CacheSize            int
-	HubbleRedactSettings HubbleRedactSettings
+	CacheSize                      int
+	HubbleRedactSettings           HubbleRedactSettings
+	EnableNetworkPolicyCorrelation bool
 }
 
 // HubbleRedactSettings contains all hubble redact related options
@@ -56,6 +57,19 @@ func Redact(logger logrus.FieldLogger, httpQuery, httpUserInfo, kafkaApiKey bool
 			logger.WithField(
 				"options",
 				fmt.Sprintf("%+v", opt)).Info("configured Hubble with redact options")
+		}
+	}
+}
+
+// EnableL3L4PolicyCorrelation configures the Network Policy correlation of Hubble Flows.
+func WithNetworkPolicyCorrelation(logger logrus.FieldLogger, enabled bool) Option {
+	return func(opt *Options) {
+		opt.EnableNetworkPolicyCorrelation = enabled
+
+		if logger != nil {
+			logger.WithField(
+				"options",
+				fmt.Sprintf("%+v", opt)).Info("configured Hubble with network policy correlation options")
 		}
 	}
 }
